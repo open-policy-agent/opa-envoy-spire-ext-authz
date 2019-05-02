@@ -1,0 +1,14 @@
+# This file is organized alphabetically.
+*.pyc
+*~
+.#*
+.DS_Store
+.secrets/
+.vscode/
+.idea
+/__fetchdb_tests
+/build
+\#*#
+docs/_book
+test/system/*.pyc
+build/

@@ -1,0 +1,139 @@
+version: '3'
+services:
+  spire-server:
+    build: ./docker/spire-server
+    hostname: spire-server
+    tty: true
+    privileged: true
+    networks:
+      envoymesh:
+        aliases:
+          - spire-server
+  db:
+    build: ./docker/db
+    hostname: db
+    tty: true
+    privileged: true
+    networks:
+      envoymesh:
+        aliases:
+          - db
+  backend:
+    build: ./docker/backend
+    hostname: backend
+    tty: true
+    privileged: true
+    networks:
+      envoymesh:
+        aliases:
+          - backend
+  web:
+    build: ./docker/web
+    hostname: web
+    tty: true
+    privileged: true
+    networks:
+      static-network-1:
+        ipv4_address: 172.28.1.2
+      static-network-2:
+        ipv4_address: 192.28.1.2
+      envoymesh:
+        aliases:
+          - web
+    expose:
+      - "8001"
+    ports:
+      - "8001:8001"
+  opa_web:
+    image: openpolicyagent/opa:0.10.7-envoy
+    volumes:
+    - ./docker/web/opa/policies:/policies
+    - ./docker/web/opa/config:/config
+    command:
+    - --plugin-dir=.
+    - run
+    - --server
+    - --log-level=debug
+    - --config-file=/config/config.yaml
+    - /policies/policy.rego
+    networks:
+      envoymesh:
+        aliases:
+          - opa_web
+    expose:
+      - "9191"
+    ports:
+      - "9191:9191"
+  opa_be:
+    image: openpolicyagent/opa:0.10.7-envoy
+    volumes:
+    - ./docker/backend/opa/policies:/policies
+    - ./docker/backend/opa/config:/config
+    command:
+    - --plugin-dir=.
+    - run
+    - --server
+    - --log-level=debug
+    - --config-file=/config/config.yaml
+    - /policies/policy.rego
+    networks:
+      envoymesh:
+        aliases:
+          - opa_be
+    expose:
+      - "9192"
+    ports:
+      - "9192:9192"
+  opa_db:
+    image: openpolicyagent/opa:0.10.7-envoy
+    volumes:
+    - ./docker/db/opa/policies:/policies
+    - ./docker/db/opa/config:/config
+    command:
+    - --plugin-dir=.
+    - run
+    - --server
+    - --log-level=debug
+    - --config-file=/config/config.yaml
+    - /policies/policy.rego
+    networks:
+      envoymesh:
+        aliases:
+          - opa_db
+    expose:
+      - "9193"
+    ports:
+      - "9193:9193"
+  api-server-1:
+    build:
+      context: ./docker/api-server
+    networks:
+      static-network-1:
+          ipv4_address: 172.28.1.1
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+  api-server-2:
+    build:
+      context: ./docker/api-server
+    networks:
+      static-network-2:
+          ipv4_address: 192.28.1.1
+    expose:
+      - "5001"
+    ports:
+      - "5001:5000"
+
+networks:
+  envoymesh: {}
+  static-network-1:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+  static-network-2:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.28.0.0/16
