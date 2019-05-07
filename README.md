@@ -6,6 +6,8 @@ OPA-Envoy(v1.10.0) External Authorization Example.
 
 Example of using Envoy's [External authorization filter](https://www.envoyproxy.io/docs/envoy/v1.10.0/intro/arch_overview/ext_authz_filter.html) with OPA as an authorization service.
 
+Blog: https://medium.com/@ashumania/envoy-external-authorization-with-opa-578213ed567c
+
 ## Example
 
 The example consists of three services (`web`, `backend` and `db`) colocated with a running service Envoy. Each service uses the external authorization filter to call its respective OPA instance for checking if an incoming request is allowed or not.
