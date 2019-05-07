@@ -6,7 +6,7 @@ OPA-Envoy(v1.10.0) External Authorization Example.
 
 Example of using Envoy's [External authorization filter](https://www.envoyproxy.io/docs/envoy/v1.10.0/intro/arch_overview/ext_authz_filter.html) with OPA as an authorization service.
 
-Blog: https://medium.com/@ashumania/envoy-external-authorization-with-opa-578213ed567c
+Blog: https://blog.openpolicyagent.org/envoy-external-authorization-with-opa-578213ed567c
 
 ## Example
 
