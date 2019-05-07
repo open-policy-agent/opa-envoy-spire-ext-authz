@@ -46,7 +46,7 @@ func serveTheGoodPath(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[%s] backend server response OK. Response body: %v", r.RemoteAddr, body)
 
 	msg := fmt.Sprintf("Allowed path: WEB -> %v\n", body)
-	fmt.Fprint(w, msg)
+	w.Write([]byte(msg))
 }
 
 func serveTheBadPath(w http.ResponseWriter, r *http.Request) {
@@ -79,7 +79,7 @@ func serveTheBadPath(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[%s] db server response OK. Response body: %v", r.RemoteAddr, body)
 
 	msg := fmt.Sprintf("Allowed path: WEB -> %v\n", body)
-	fmt.Fprint(w, msg)
+	w.Write([]byte(msg))
 }
 
 func tryRead(r io.Reader) string {

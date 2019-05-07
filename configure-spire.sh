@@ -8,7 +8,7 @@ bb=$(tput bold)
 nn=$(tput sgr0)
 
 fingerprint() {
-	cat $1 | openssl x509 -outform DER | openssl sha1
+	cat $1 | openssl x509 -outform DER | openssl sha1 -r | awk '{print $1}'
 }
 
 WEB_AGENT_FINGERPRINT=$(fingerprint docker/web/conf/agent.crt.pem)
