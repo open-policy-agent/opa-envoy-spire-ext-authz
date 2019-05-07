@@ -45,18 +45,18 @@ echo "${nn}"
 
 echo "${bb}Creating registration entry for the web server...${nn}"
 docker-compose exec spire-server bin/spire-server entry create \
-	-parentID spiffe://domain.test/spire/agent/x509pop/${WEB_AGENT_FINGERPRINT} \
+	-selector unix:user:root \
 	-spiffeID spiffe://domain.test/web-server \
-	-selector unix:user:root
+	-parentID spiffe://domain.test/spire/agent/x509pop/${WEB_AGENT_FINGERPRINT}
 
 echo "${bb}Creating registration entry for the backend server...${nn}"
 docker-compose exec spire-server bin/spire-server entry create \
-	-parentID spiffe://domain.test/spire/agent/x509pop/${BACKEND_AGENT_FINGERPRINT} \
+	-selector unix:user:root \
 	-spiffeID spiffe://domain.test/backend-server \
-	-selector unix:user:root
+	-parentID spiffe://domain.test/spire/agent/x509pop/${BACKEND_AGENT_FINGERPRINT}
 
 echo "${bb}Creating registration entry for the db server...${nn}"
 docker-compose exec spire-server bin/spire-server entry create \
-	-parentID spiffe://domain.test/spire/agent/x509pop/${DB_AGENT_FINGERPRINT} \
+	-selector unix:user:root \
 	-spiffeID spiffe://domain.test/db-server \
-	-selector unix:user:root
+	-parentID spiffe://domain.test/spire/agent/x509pop/${DB_AGENT_FINGERPRINT}
